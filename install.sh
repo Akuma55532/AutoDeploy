@@ -205,11 +205,6 @@ if should_execute_step 6.12; then
     check_error "6.12"
 fi
 
-if should_execute_step 6.13; then
-    sudo cp /home/nv/20.04-vins-ego-ros/rs_camera.launch /opt/ros/noetic/share/realsense2_camera/launch 
-    check_error "6.13"
-fi
-
 # step 7: install opencv 4.6.0
 if should_execute_step 7.1; then
     echo "Step 7: Installing OpenCV 4.6.0..."
