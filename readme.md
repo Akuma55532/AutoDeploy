@@ -56,8 +56,12 @@ Step 1.0 failed. Exiting.
 
 脚本执行过程中可能会出现错误，脚本会自动将报错信息输出到同级目录下的`install_errors.txt`，请检查错误信息。若无法解决，可联系工程师。
 
+![示意图5](./images/image5.png)
+
+![示意图6](./images/image6.png)
+
 8. 脚本说明
 
 脚本本质上是将需要在终端中逐条执行的命令封装并顺序执行。脚本中的每条命令也可以单独在终端运行。若想查看某个步骤具体执行了哪些命令，请打开 `install.sh` 查看。
 
-![示意图2](./images/image2.png)
+![示意图4](./images/image4.png)
