@@ -1,8 +1,12 @@
-# install.sh 自动化部署脚本
+# 自动化部署脚本
 
-版本：v1.0
+版本：v1.3
 
-## 使用方法（目前支持VINS套件无人机的环境部署）
+- [install.sh](./install.sh)
+
+- [install_fastlio.sh](./install_fastlio.sh)
+
+## 使用方法（目前支持VINS单机套件和Fasterlio单机套件无人机的环境部署,以VINS套件部署为例）
 
 **注意：本部署脚本使用绝对路径查找文件，请勿随意修改下文中使用的文件路径或文件名。**
 
