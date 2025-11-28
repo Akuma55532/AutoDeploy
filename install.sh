@@ -8,7 +8,10 @@ echo "Starting VINS-ROS-EGO deployment from step $START_STEP..."
 # Function to check last command result
 check_error() {
     if [ $? -ne 0 ]; then
-        echo "Error: Step $1 failed. Exiting."
+        local error_time=$(date '+%Y-%m-%d %H:%M:%S')
+        local error_msg="Error: Step $1 failed at $error_time"
+        echo "$error_msg" | tee -a /home/nv/install_errors.txt
+        echo "Exiting." | tee -a /home/nv/install_errors.txt
         exit 1
     else
         echo "Step $1 completed successfully."
@@ -128,18 +131,11 @@ fi
 
 if should_execute_step 5.8; then
     sudo apt -y install python3-pip 
+    sudo -H pip3 install -U pip
+    sudo -H pip install jetson-stats
     check_error "5.8"
 fi
 
-if should_execute_step 5.9; then
-    sudo -H pip3 install -U pip
-    check_error "5.9"
-fi
-
-if should_execute_step 5.10; then
-    sudo -H pip install jetson-stats
-    check_error "5.10"
-fi
 
 # step 6: install librealsense
 if should_execute_step 6.1; then
@@ -176,40 +172,24 @@ fi
 
 if should_execute_step 6.7; then
     cd /home/nv/librealsense
-    sudo cp config/99-realsense-libusb.rules /etc/udev/rules.d/ 
+    sudo cp config/99-realsense-libusb.rules /etc/udev/rules.d/
+    sudo udevadm control --reload-rules
+    sudo udevadm trigger
     check_error "6.7"
 fi
 
 if should_execute_step 6.8; then
-    sudo udevadm control --reload-rules 
+    pip install pyrealsense2
+    sudo apt-get -y install ros-noetic-ddynamic-reconfigure
     check_error "6.8"
 fi
 
 if should_execute_step 6.9; then
-    sudo udevadm trigger 
-    check_error "6.9"
-fi
-
-if should_execute_step 6.10; then
-    pip install pyrealsense2
-    check_error "6.10"
-fi
-
-if should_execute_step 6.11; then
-    sudo apt-get -y install ros-noetic-realsense2-camera 
-    check_error "6.11"
-fi
-
-if should_execute_step 6.12; then
-    source ~/.bashrc 
-    check_error "6.12"
-fi
-
-if should_execute_step 6.13; then
-    sudo cp /home/nv/20.04-vins-ego-ros/realsense_ws /home/nv/
+    cp -rf /home/nv/20.04-vins-ego-ros/realsense_ws /home/nv/
     cd /home/nv/realsense_ws
+    source /opt/ros/noetic/setup.bash
     catkin_make
-    check_error "6.13"
+    check_error "6.9"
 fi
 
 # step 7: install opencv 4.6.0
